@@ -740,7 +740,8 @@ Returns the date, in rfc822 format.
 sub date {
 	my $this=shift;
 
-	my $date=$this->runpipe(1, "date -R");
+	# obscure date by removing the package creation time, set to 00:00:00
+	my $date=$this->runpipe(1, "date -R | sed 's/[[:digit:]][[:digit:]]:[[:digit:]][[:digit:]]:[[:digit:]][[:digit:]]/00:00:00/g'");
 	chomp $date;
 	if (!$date) {
 		die "date -R did not return a valid result.";
